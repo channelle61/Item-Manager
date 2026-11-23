@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A clean, responsive item manager powered by a Node.js and Express REST API." />
+  <title>Item Manager | Midnight &amp; Emerald</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="site-header">
+      <div class="brand">
+        <div class="brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
+            <path d="m3.3 7 8.7 5 8.7-5M12 22V12" />
+          </svg>
+        </div>
+        <div>
+          <p class="brand__eyebrow">Simple REST API</p>
+          <h1 class="brand__title">Item Manager</h1>
+        </div>
+      </div>
+
+      <div id="apiStatus" class="api-status api-status--loading" role="status" aria-live="polite">
+        <span class="api-status__dot" aria-hidden="true"></span>
+        <span id="apiStatusText">Connecting to API…</span>
+      </div>
+    </header>
+
+    <main class="main-layout">
+      <div
+        id="alertBanner"
+        class="alert alert--error"
+        role="alert"
+        aria-live="assertive"
+        hidden
+      >
+        <span class="alert__icon" aria-hidden="true">!</span>
+        <div class="alert__content">
+          <strong id="alertTitle">Request failed</strong>
+          <span id="alertMessage"></span>
+        </div>
+        <span id="alertCode" class="alert__code" hidden></span>
+        <button type="button" id="alertClose" class="alert__close" aria-label="Dismiss alert">&times;</button>
+      </div>
+
+      <section id="formPanel" class="panel form-panel" aria-labelledby="formTitle">
+        <div class="panel__header">
+          <div>
+            <h2 id="formTitle" class="panel__title">Add an item</h2>
+            <p id="formHint" class="panel__subtitle">Fill in the details to create a new item.</p>
+          </div>
+        </div>
+
+        <form id="itemForm" class="item-form">
+          <div class="field">
+            <label for="nameInput">Item name</label>
+            <input
+              id="nameInput"
+              name="name"
+              type="text"
+              placeholder="e.g. Wireless Mouse"
+              maxlength="80"
+              autocomplete="off"
+              required
+            />
+          </div>
+
+          <div class="field">
+            <label for="priceInput">Price (USD)</label>
+            <div class="input-affix">
+              <span class="input-affix__symbol" aria-hidden="true">$</span>
+              <input
+                id="priceInput"
+                name="price"
+                type="number"
+                min="0.01"
+                step="0.01"
+                placeholder="0.00"
+                inputmode="decimal"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" id="submitBtn" class="btn btn--primary">Add item</button>
+            <button type="button" id="cancelEditBtn" class="btn btn--ghost" hidden>Cancel edit</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="panel items-panel" aria-labelledby="itemsTitle">
+        <div class="panel__header">
+          <div>
+            <h2 id="itemsTitle" class="panel__title">Items</h2>
+            <p class="panel__subtitle">Browse, edit, or remove inventory entries.</p>
+          </div>
+          <div class="panel__tools">
+            <span id="itemCount" class="count-pill">0 items</span>
+            <button
+              type="button"
+              id="refreshBtn"
+              class="btn btn--ghost btn--icon"
+              aria-label="Refresh items"
+              title="Refresh items"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 12a9 9 0 1 1-2.64-6.36" />
+                <path d="M21 3v6h-6" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div id="itemsContainer" class="items-grid" aria-live="polite">
+          <div class="state state--loading">
+            <span class="spinner" aria-hidden="true"></span>
+            <p>Loading items…</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>Connected to <code>http://localhost:3000/api/items</code></p>
+    </footer>
+  </div>
+</body>
+</html>
